@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: ./ThriveX-Server
+      dockerfile: Dockerfile
+    image: thrive-blog
+    container_name: backend
+    ports:
+      - "9003:9003"
+    environment:
+      - SPRING_PROFILES_ACTIVE=pro
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/thrive?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    networks:
+      - db_db
+
+  admin:
+    build:
+        context: ./ThriveX-Admin
+        dockerfile: Dockerfile
+    image: thrive-blog-admin
+    container_name: blog-admin
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "9004:80"
+    networks:
+      - db_db
+
+  web:
+    image: thrive-blog-web
+    container_name: blog-web
+    ports:
+      - "9001:9001"
+    networks:
+      - db_db
+    environment:
+      NEXT_PUBLIC_PROJECT_API: http://backend:9003/api
+      PROJECT_API: http://backend:9003/api
+      NEXT_PUBLIC_CACHING_TIME: 0
+
+networks:
+  db_db:
+    external: true
