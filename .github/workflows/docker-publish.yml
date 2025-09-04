@@ -39,31 +39,3 @@ jobs:
           
           # 推送版本标签镜像
           docker push $ACR_REGISTRY/$ACR_NAMESPACE/$IMAGE_NAME:$DOCKER_VERSION
-          
-      - name: 构建和推送前台镜像包
-        env:
-          ACR_REGISTRY: ${{ secrets.ALIYUN_ACR_REGISTRY }}
-          ACR_NAMESPACE: ${{ secrets.ALIYUN_ACR_NAMESPACE }}  # 你的命名空间
-          DOCKER_VERSION: latest
-          IMAGE_NAME: thrive-blog-web  # 镜像名称
-        run: |
-          cd ThriveX-Blog
-          # 构建镜像
-          docker build -t $ACR_REGISTRY/$ACR_NAMESPACE/$IMAGE_NAME:$DOCKER_VERSION .
-          
-          # 推送版本标签镜像
-          docker push $ACR_REGISTRY/$ACR_NAMESPACE/$IMAGE_NAME:$DOCKER_VERSION
-          
-      - name: 构建和推送后端镜像包
-        env:
-          ACR_REGISTRY: ${{ secrets.ALIYUN_ACR_REGISTRY }}
-          ACR_NAMESPACE: ${{ secrets.ALIYUN_ACR_NAMESPACE }}  # 你的命名空间
-          DOCKER_VERSION: latest
-          IMAGE_NAME: thrive-blog-admin  # 镜像名称
-        run: |
-          cd ThriveX-Admin
-          # 构建镜像
-          docker build -t $ACR_REGISTRY/$ACR_NAMESPACE/$IMAGE_NAME:$DOCKER_VERSION .
-
-          # 推送版本标签镜像
-          docker push $ACR_REGISTRY/$ACR_NAMESPACE/$IMAGE_NAME:$DOCKER_VERSION
